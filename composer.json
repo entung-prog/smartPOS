@@ -1,9 +1,9 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "smartpos/smart-pos-template",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "Open-source Smart POS template (retail + restaurant) built with Laravel 13, Filament v5, Livewire, and Tailwind.",
+    "keywords": ["laravel", "pos", "point-of-sale", "filament", "livewire", "tailwind", "retail", "restaurant"],
     "license": "MIT",
     "require": {
         "php": "^8.3",

@@ -21,6 +21,10 @@ class PosTerminal extends Component
     public bool $showSuccess = false;
     public ?int $lastTransactionId = null;
 
+    // Receipt data
+    public bool $showReceipt = false;
+    public array $receiptData = [];
+
     public function getProductsProperty()
     {
         $query = Product::where('stock', '>', 0);
@@ -140,6 +144,8 @@ class PosTerminal extends Component
                 'status'  => 'completed',
             ]);
 
+            $receiptItems = [];
+
             foreach ($this->cart as $item) {
                 $product = Product::lockForUpdate()->find($item['id']);
 
@@ -158,14 +164,33 @@ class PosTerminal extends Component
                 $product->decrement('stock', $item['qty']);
 
                 broadcast(new StockUpdated($product->fresh()))->toOthers();
+
+                $receiptItems[] = [
+                    'name'     => $item['name'],
+                    'qty'      => $item['qty'],
+                    'price'    => $item['price'],
+                    'subtotal' => $item['price'] * $item['qty'],
+                ];
             }
 
             DB::commit();
 
             broadcast(new TransactionCreated($transaction))->toOthers();
 
+            // Build receipt data
+            $this->receiptData = [
+                'id'       => $transaction->id,
+                'date'     => now()->format('d/m/Y H:i'),
+                'cashier'  => auth()->user()->name,
+                'items'    => $receiptItems,
+                'total'    => $this->total,
+                'paid'     => $this->paid,
+                'change'   => $this->change,
+            ];
+
             $this->lastTransactionId = $transaction->id;
             $this->showSuccess = true;
+            $this->showReceipt = true;
             $this->cart = [];
             $this->total = 0;
             $this->paid = 0;
@@ -182,6 +207,11 @@ class PosTerminal extends Component
     public function dismissSuccess(): void
     {
         $this->showSuccess = false;
+    }
+
+    public function closeReceipt(): void
+    {
+        $this->showReceipt = false;
     }
 
     public function render()

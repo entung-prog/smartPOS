@@ -52,10 +52,18 @@
                     wire:click="addToCart({{ $product->id }})"
                     class="bg-white border border-gray-200 rounded-xl p-3 sm:p-4 cursor-pointer hover:shadow-lg hover:border-indigo-300 transition-all duration-200 group"
                 >
-                    <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg p-2 sm:p-4 mb-2 sm:mb-3 flex items-center justify-center">
-                        <svg class="w-6 h-6 sm:w-10 sm:h-10 text-indigo-400 group-hover:text-indigo-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-                        </svg>
+                    <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg p-2 sm:p-4 mb-2 sm:mb-3 flex items-center justify-center overflow-hidden aspect-square">
+                        @if($product->image)
+                            <img
+                                src="{{ asset('storage/' . $product->image) }}"
+                                alt="{{ $product->name }}"
+                                class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-200"
+                            >
+                        @else
+                            <svg class="w-6 h-6 sm:w-10 sm:h-10 text-indigo-400 group-hover:text-indigo-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                            </svg>
+                        @endif
                     </div>
                     <h3 class="font-semibold text-gray-800 text-xs sm:text-sm truncate">{{ $product->name }}</h3>
                     <p class="text-indigo-600 font-bold text-sm sm:text-base mt-1">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
@@ -165,4 +173,128 @@
             </button>
         </div>
     </div>
+
+    {{-- Receipt Modal --}}
+    @if($showReceipt && !empty($receiptData))
+        <div class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm print:bg-white print:backdrop-blur-none" id="receipt-overlay">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full mx-4 max-h-[90vh] overflow-y-auto print:shadow-none print:rounded-none print:max-w-none print:mx-0 print:max-h-none">
+                {{-- Receipt Content --}}
+                <div id="receipt-content" class="p-6 sm:p-8">
+                    {{-- Header --}}
+                    <div class="text-center mb-4">
+                        <h2 class="text-xl font-black text-gray-900 tracking-tight">SMART POS</h2>
+                        <p class="text-xs text-gray-500 mt-1">Struk Transaksi</p>
+                        <div class="border-b-2 border-dashed border-gray-300 mt-3"></div>
+                    </div>
+
+                    {{-- Transaction Info --}}
+                    <div class="space-y-1 text-xs text-gray-600 mb-4">
+                        <div class="flex justify-between">
+                            <span>No. Transaksi</span>
+                            <span class="font-semibold text-gray-900">#{{ $receiptData['id'] }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Tanggal</span>
+                            <span>{{ $receiptData['date'] }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Kasir</span>
+                            <span>{{ $receiptData['cashier'] }}</span>
+                        </div>
+                    </div>
+
+                    <div class="border-b border-dashed border-gray-300 mb-3"></div>
+
+                    {{-- Items --}}
+                    <div class="space-y-2 mb-3">
+                        @foreach($receiptData['items'] as $item)
+                            <div>
+                                <p class="text-sm font-medium text-gray-800">{{ $item['name'] }}</p>
+                                <div class="flex justify-between text-xs text-gray-500">
+                                    <span>{{ $item['qty'] }} × Rp {{ number_format($item['price'], 0, ',', '.') }}</span>
+                                    <span class="font-semibold text-gray-700">Rp {{ number_format($item['subtotal'], 0, ',', '.') }}</span>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <div class="border-b-2 border-dashed border-gray-300 mb-3"></div>
+
+                    {{-- Totals --}}
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Total</span>
+                            <span class="font-bold text-gray-900 text-base">Rp {{ number_format($receiptData['total'], 0, ',', '.') }}</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Dibayar</span>
+                            <span class="font-semibold text-gray-700">Rp {{ number_format($receiptData['paid'], 0, ',', '.') }}</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Kembalian</span>
+                            <span class="font-semibold text-emerald-600">Rp {{ number_format($receiptData['change'], 0, ',', '.') }}</span>
+                        </div>
+                    </div>
+
+                    <div class="border-b border-dashed border-gray-300 mt-4 mb-4"></div>
+
+                    {{-- Footer --}}
+                    <div class="text-center">
+                        <p class="text-xs text-gray-500">Terima kasih atas kunjungan Anda!</p>
+                        <p class="text-[10px] text-gray-400 mt-1">Smart POS — {{ now()->format('Y') }}</p>
+                    </div>
+                </div>
+
+                {{-- Action Buttons (hidden on print) --}}
+                <div class="border-t border-gray-100 px-6 py-4 flex gap-3 print:hidden">
+                    <button
+                        wire:click="closeReceipt"
+                        class="flex-1 py-2.5 px-4 rounded-xl border border-gray-300 text-gray-700 font-medium text-sm hover:bg-gray-50 transition"
+                    >
+                        Tutup
+                    </button>
+                    <button
+                        onclick="window.print()"
+                        class="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-sm hover:from-indigo-700 hover:to-purple-700 transition flex items-center justify-center gap-2"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                        </svg>
+                        Cetak Struk
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>
+
+{{-- Print Styles --}}
+<style>
+    @media print {
+        body * {
+            visibility: hidden !important;
+        }
+        #receipt-overlay,
+        #receipt-overlay * {
+            visibility: visible !important;
+        }
+        #receipt-overlay {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: auto !important;
+            background: white !important;
+            z-index: 99999 !important;
+        }
+        #receipt-content {
+            width: 80mm !important;
+            margin: 0 auto !important;
+            padding: 10px !important;
+            font-size: 12px !important;
+        }
+        .print\\:hidden {
+            display: none !important;
+        }
+    }
+</style>

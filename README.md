@@ -1,58 +1,176 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Smart POS (Template)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Template **Point of Sale (POS)** open-source untuk **retail + restoran** yang dibangun dengan Laravel 13, Filament v5, Livewire, dan Tailwind.
 
-## About Laravel
+## Fitur
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Admin panel (Filament)**: produk, pelanggan, transaksi, users (role admin/kasir)
+- **Kasir (Breeze + Livewire)**: POS terminal, keranjang, pembayaran, cetak struk
+- **API (Sanctum)**: endpoint dasar untuk integrasi eksternal
+- **Real-time**: Reverb/WebSocket untuk update stok/transaksi (opsional)
+- **Monitoring**: Laravel Pulse (opsional)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🛠️ Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Backend**: [Laravel 13](https://laravel.com) (PHP 8.3+)
+- **Admin Panel**: [Filament v5](https://filamentphp.com)
+- **Frontend Kasir**: [Livewire](https://livewire.laravel.com) + Blade + Tailwind CSS
+- **Database**: SQLite (default) / MySQL / PostgreSQL
+- **Auth**: Laravel Breeze + Sanctum (API)
+- **Real-time**: Laravel Reverb (WebSocket)
+- **Monitoring**: Laravel Pulse
 
-## Learning Laravel
+## 📁 Struktur Proyek
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+```
+smart-pos/
+├── app/
+│   ├── Filament/           # Admin panel (Filament resources)
+│   │   ├── Pages/          # Kasir page, Pulse dashboard
+│   │   ├── Resources/      # Customers, Products, Transactions
+│   │   └── Widgets/        # Dashboard widgets
+│   ├── Http/
+│   │   ├── Controllers/    # Kasir, API controllers
+│   │   └── Middleware/     # Role checking
+│   ├── Livewire/           # PosTerminal component
+│   ├── Models/             # User, Product, Customer, Transaction
+│   └── Events/             # Real-time broadcasting events
+├── resources/views/
+│   ├── kasir/              # Kasir dashboard views
+│   ├── livewire/           # POS terminal view
+│   └── welcome.blade.php   # Landing page
+├── routes/
+│   ├── web.php             # Web routes (kasir, profile)
+│   └── api.php             # API routes (auth, products, transactions)
+└── database/migrations/    # Database schema
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## 🚀 Instalasi
+
+### Persyaratan
+- PHP 8.3+
+- Composer 2+
+- Node.js 18+ & npm
+- SQLite / MySQL / PostgreSQL
+
+### Langkah Setup
+
+```bash
+# 1) Install dependencies
+composer install
+npm install
+
+# 2) Setup environment
+cp .env.example .env
+php artisan key:generate
+
+# 3) Database (default: SQLite)
+php artisan migrate
+
+# 4) Storage symlink (untuk upload gambar)
+php artisan storage:link
+
+# 5) Run dev
+composer run dev
+```
+
+Atau gunakan shortcut:
+```bash
+composer run dev
+```
+
+### Seed data (opsional)
+
+Setelah migrate, kamu bisa isi data demo:
+
+```bash
+php artisan smartpos:seed-demo
+```
+
+Ini akan membuat akun demo (untuk lokal):
+
+- **Admin**: `admin@smartpos.test` / `password`
+- **Kasir**: `kasir@smartpos.test` / `password`
+
+Catatan: jangan gunakan kredensial demo ini untuk production—ganti password setelah deploy.
+
+## 📖 Penggunaan
+
+### Admin Panel
+Login lalu akses `http://localhost:8000/admin` untuk:
+- Mengelola **Produk** (tambah, edit, hapus, upload gambar)
+- Mengelola **Pelanggan** (CRUD data pelanggan)
+- Melihat **Transaksi** (histori semua transaksi)
+- Mengelola **Users** (kasir & admin)
+- **Monitoring** performa via Laravel Pulse
+
+### Kasir
+Login lalu akses `http://localhost:8000/kasir` untuk:
+- Mencari dan memilih produk
+- Mengelola keranjang belanja
+- Memproses pembayaran
+- **Mencetak struk** transaksi
+- Melihat riwayat transaksi sendiri
+
+## Checklist (fresh install)
+
+- `composer install` + `npm install`
+- `cp .env.example .env` + `php artisan key:generate`
+- `php artisan migrate`
+- `php artisan storage:link`
+- (opsional) `php artisan smartpos:seed-demo`
+- `composer run dev`
+- Cek halaman:
+  - `/` (landing)
+  - `/admin` (admin panel)
+  - `/kasir` (kasir)
+
+## Troubleshooting
+
+- **Gambar tidak muncul**: pastikan sudah `php artisan storage:link`.
+- **Pulse error / data korup**: jalankan `php artisan pulse:clear --force` lalu refresh `/pulse`.
+- **Reset data lokal**: `php artisan migrate:fresh` lalu (opsional) `php artisan smartpos:seed-demo`.
+
+## 🔌 API Endpoints
+
+### Autentikasi
+```
+POST   /api/auth/login      # Login, mendapatkan token
+GET    /api/auth/me          # Info user saat ini
+POST   /api/auth/logout      # Logout, revoke token
+```
+
+### Produk
+```
+GET    /api/products         # List semua produk
+GET    /api/products/{id}    # Detail produk
+POST   /api/products         # Tambah produk baru
+PUT    /api/products/{id}    # Update produk
+DELETE /api/products/{id}    # Hapus produk
+```
+
+### Transaksi
+```
+GET    /api/transactions         # List transaksi
+GET    /api/transactions/{id}    # Detail transaksi
+POST   /api/transactions         # Buat transaksi baru
+```
+
+### Dashboard
+```
+GET    /api/dashboard/stats      # Statistik dashboard
+```
+
+> Semua endpoint (kecuali login) memerlukan header `Authorization: Bearer {token}`
+
+## 📄 License
+
+Smart POS Template is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Lihat `CONTRIBUTING.md`.
 
-## Code of Conduct
+## Security
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Lihat `SECURITY.md`.
