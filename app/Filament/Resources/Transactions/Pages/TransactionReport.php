@@ -8,8 +8,8 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Resources\Pages\Page;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -34,9 +34,9 @@ class TransactionReport extends Page implements HasForms
         $this->dateUntil = now()->toDateString();
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Select::make('period')
                     ->label('Periode')
@@ -117,9 +117,11 @@ class TransactionReport extends Page implements HasForms
             ->get();
 
         // Top cashiers
-        $topCashiers = (clone $query)
-            ->where('status', 'completed')
+        $topCashiers = Transaction::query()
             ->join('users', 'users.id', '=', 'transactions.user_id')
+            ->when($this->dateFrom, fn ($q) => $q->whereDate('transactions.created_at', '>=', $this->dateFrom))
+            ->when($this->dateUntil, fn ($q) => $q->whereDate('transactions.created_at', '<=', $this->dateUntil))
+            ->where('transactions.status', 'completed')
             ->selectRaw('users.name, COUNT(*) as total_transactions, SUM(transactions.total) as total_revenue')
             ->groupBy('users.id', 'users.name')
             ->orderByDesc('total_revenue')

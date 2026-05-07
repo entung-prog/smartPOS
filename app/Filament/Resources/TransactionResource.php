@@ -244,9 +244,9 @@ class TransactionResource extends Resource
         return [
             'index'  => Pages\ListTransactions::route('/'),
             'create' => Pages\CreateTransaction::route('/create'),
+            'report' => Pages\TransactionReport::route('/report'),
             'view'   => Pages\ViewTransaction::route('/{record}'),
             'edit'   => Pages\EditTransaction::route('/{record}/edit'),
-            'report' => Pages\TransactionReport::route('/report'),
         ];
     }
 }
