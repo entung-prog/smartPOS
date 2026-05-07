@@ -24,9 +24,7 @@
             {{-- Navigation --}}
             <header class="sticky top-0 z-40 border-b border-slate-200/70 bg-white/80 backdrop-blur">
                 <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-                    <a href="/" class="flex items-center gap-3 font-semibold tracking-tight text-slate-900">
-                        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-sm">
-                            ⚡
+                    <a href="/" class="flex items-center gap-3 font-semibold tracking-tight text-slate-900">    
                         </span>
                         <span>Smart POS</span>
                     </a>
@@ -196,34 +194,40 @@
 
                         <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                             <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-50 text-indigo-700">🖥️</div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-tv" viewBox="0 0 16 16">
+                                    <path d="M2.5 13.5A.5.5 0 0 1 3 13h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5M13.991 3l.024.001a1.5 1.5 0 0 1 .538.143.76.76 0 0 1 .302.254c.067.1.145.277.145.602v5.991l-.001.024a1.5 1.5 0 0 1-.143.538.76.76 0 0 1-.254.302c-.1.067-.277.145-.602.145H2.009l-.024-.001a1.5 1.5 0 0 1-.538-.143.76.76 0 0 1-.302-.254C1.078 10.502 1 10.325 1 10V4.009l.001-.024a1.5 1.5 0 0 1 .143-.538.76.76 0 0 1 .254-.302C1.498 3.078 1.675 3 2 3zM14 2H2C0 2 0 4 0 4v6c0 2 2 2 2 2h12c2 0 2-2 2-2V4c0-2-2-2-2-2"/>
+                                </svg>
                                 <h3 class="mt-4 text-base font-semibold text-slate-900">POS Terminal</h3>
                                 <p class="mt-2 text-sm leading-relaxed text-slate-600">Cari produk cepat, kelola keranjang, dan proses pembayaran tanpa ribet.</p>
                             </div>
                             <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">📦</div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-boxes" viewBox="0 0 16 16">
+                                    <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434zM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567zM7.5 9.933l-2.75 1.571v3.134l2.75-1.571zm1 3.134 2.75 1.571v-3.134L8.5 9.933zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567zm2.242-2.433V3.504L8.5 5.076V8.21zM7.5 8.21V5.076L4.75 3.504v3.134zM5.258 2.643 8 4.21l2.742-1.567L8 1.076zM15 9.933l-2.75 1.571v3.134L15 13.067zM3.75 14.638v-3.134L1 9.933v3.134z"/>
+                                </svg>
                                 <h3 class="mt-4 text-base font-semibold text-slate-900">Inventaris</h3>
                                 <p class="mt-2 text-sm leading-relaxed text-slate-600">Stok otomatis berkurang saat transaksi dan mudah diaudit.</p>
                             </div>
                             <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-sky-50 text-sky-700">📊</div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bar-chart" viewBox="0 0 16 16">
+                                    <path d="M4 11H2v3h2zm5-4H7v7h2zm5-5v12h-2V2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm-5 4a1 1 0 0 1 1-1h2a１ １ 0 0 １ １ １v3a１ １ 0 0 １-１ １H２a１ １ 0 0 １-１-１z"/>
+                                </svg>
                                 <h3 class="mt-4 text-base font-semibold text-slate-900">Riwayat Transaksi</h3>
                                 <p class="mt-2 text-sm leading-relaxed text-slate-600">Detail transaksi lengkap, mudah dicari, dan siap jadi bahan laporan.</p>
                             </div>
                             <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-50 text-amber-700">👥</div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+                                    <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
+                                </svg>
                                 <h3 class="mt-4 text-base font-semibold text-slate-900">Multi-Role</h3>
                                 <p class="mt-2 text-sm leading-relaxed text-slate-600">Pisahkan akses Admin dan Kasir untuk operasional yang lebih aman.</p>
                             </div>
                             <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-rose-50 text-rose-700">🧾</div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
+                                        <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1"/>
+                                        <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1"/>
+                                </svg>
                                 <h3 class="mt-4 text-base font-semibold text-slate-900">Cetak Struk</h3>
                                 <p class="mt-2 text-sm leading-relaxed text-slate-600">Cetak struk langsung dari browser dengan format yang rapi.</p>
-                            </div>
-                            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-teal-50 text-teal-700">🔌</div>
-                                <h3 class="mt-4 text-base font-semibold text-slate-900">REST API</h3>
-                                <p class="mt-2 text-sm leading-relaxed text-slate-600">Integrasi ke aplikasi lain dengan autentikasi via Laravel Sanctum.</p>
                             </div>
                         </div>
                     </div>
