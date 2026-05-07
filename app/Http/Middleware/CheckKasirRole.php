@@ -10,8 +10,19 @@ class CheckKasirRole
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $request->user() || $request->user()->role !== 'kasir') {
-            return redirect('/admin');
+        if (! $request->user()) {
+            return redirect()->route('login');
+        }
+
+        if ($request->user()->role !== 'kasir') {
+            if ($request->expectsJson() || $request->is('api/*')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized.',
+                ], 403);
+            }
+
+            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
         }
 
         return $next($request);

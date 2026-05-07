@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\TransactionController;
+use App\Http\Middleware\CheckAdminRole;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// Auth (public)
+// Auth (public) — with rate limiting
 Route::prefix('auth')->group(function () {
-    Route::post('login', [AuthController::class, 'login']);
+    Route::post('login', [AuthController::class, 'login'])->middleware('throttle:5,1');
 });
 
 // Protected routes (Sanctum)
@@ -25,14 +26,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
     });
 
-    // Dashboard stats
-    Route::get('dashboard/stats', [DashboardController::class, 'stats']);
-
-    // Products
-    Route::apiResource('products', ProductController::class);
-
-    // Transactions
-    Route::get('transactions', [TransactionController::class, 'index']);
-    Route::get('transactions/{transaction}', [TransactionController::class, 'show']);
-    Route::post('transactions', [TransactionController::class, 'store']);
+    // Admin-level endpoints
+    Route::middleware(CheckAdminRole::class)->group(function () {
+        Route::get('dashboard/stats', [DashboardController::class, 'stats']);
+        Route::apiResource('products', ProductController::class);
+        Route::apiResource('transactions', TransactionController::class);
+    });
 });
